@@ -38,10 +38,10 @@ public class User {
 
     private int projectSize;
 
-//    @JsonIgnore
-//    @ManyToMany(mappedBy = "team")
-//    private List<Project> projects = new ArrayList<>();
-//
+    @JsonIgnore
+    @ManyToMany(mappedBy = "team")
+    private List<Project> projects = new ArrayList<>();
+
 
 }
 
