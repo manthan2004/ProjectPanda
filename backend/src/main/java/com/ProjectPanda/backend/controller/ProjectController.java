@@ -1,9 +1,12 @@
 package com.ProjectPanda.backend.controller;
 
 import com.ProjectPanda.backend.modal.Chat;
+import com.ProjectPanda.backend.modal.Invitation;
 import com.ProjectPanda.backend.modal.Project;
 import com.ProjectPanda.backend.modal.User;
+import com.ProjectPanda.backend.request.InviteRequest;
 import com.ProjectPanda.backend.response.MessageResponse;
+import com.ProjectPanda.backend.service.InvitationService;
 import com.ProjectPanda.backend.service.ProjectService;
 import com.ProjectPanda.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +25,9 @@ public class ProjectController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private InvitationService invitationService;
 
 
     @GetMapping
@@ -99,6 +105,29 @@ public class ProjectController {
         return new ResponseEntity<>(chat, HttpStatus.OK);
     }
 
+    @PostMapping("/invite")
+    public ResponseEntity<MessageResponse>inviteProject(
+            @RequestBody InviteRequest req,
+            @RequestHeader("Authorization") String jwt,
+            @RequestBody Project project
+    ) throws Exception {
+        User user=userService.findUserProfileByJwt(jwt);
+        invitationService.sendInvitation(req.getEmail(), req.getProjectId());
+        MessageResponse res= new MessageResponse("User invitation sent");
+        return new ResponseEntity<>(res,HttpStatus.OK);
+    }
+
+    @GetMapping("/accept_invitation")
+    public ResponseEntity<Invitation>acceptInviteProject(
+            @RequestParam String token,
+            @RequestHeader("Authorization") String jwt,
+            @RequestBody Project project
+    ) throws Exception {
+        User user=userService.findUserProfileByJwt(jwt);
+       Invitation invitation=invitationService.acceptInvitation(token,user.getId());
+       projectService.addUserToProject(invitation.getProjectId(), user.getId());
+       return  new ResponseEntity<>(invitation, HttpStatus.ACCEPTED);
+    }
 
 
 }
