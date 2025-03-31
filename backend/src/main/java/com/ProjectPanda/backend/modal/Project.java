@@ -6,11 +6,13 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ManyToAny;
+
 
 @Entity
 @Data
@@ -27,25 +29,22 @@ public class Project {
 
     private String category;
 
-
     private List<String> tags = new ArrayList<>();
 
-    @JsonIgnore
-    @OneToOne(mappedBy = "project", cascade = CascadeType.ALL,orphanRemoval = true)
-    private Chat chat;
-
+      @JsonIgnore
+      @OneToOne(mappedBy = "project", cascade = CascadeType.ALL,orphanRemoval = true)
+      private Chat chat;
+//
     @ManyToOne
     private User owner;
-
-    @JsonIgnore
+//
+//    @JsonIgnore
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Issue> issues = new ArrayList<>();
-
-
+//
+//
     @ManyToMany
     private List<User> team = new ArrayList<>();
 
 
 }
-
-

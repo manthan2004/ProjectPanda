@@ -2,15 +2,23 @@ package com.ProjectPanda.backend.modal;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
+
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Table(name = "issues")
+
 public class Issue {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -32,7 +40,8 @@ public class Issue {
 
     @JsonIgnore
     @OneToMany(mappedBy = "issue", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Comment> comments=new ArrayList<>();
-
+    private List<Comment> comments = new ArrayList<>();
 
 }
+
+
