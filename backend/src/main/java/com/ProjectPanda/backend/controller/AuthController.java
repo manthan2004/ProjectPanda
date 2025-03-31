@@ -7,6 +7,7 @@ import com.ProjectPanda.backend.repository.UserRepository;
 import com.ProjectPanda.backend.request.LoginRequest;
 import com.ProjectPanda.backend.response.AuthResponse;
 import com.ProjectPanda.backend.service.CustomeUserDetailsImpl;
+import com.ProjectPanda.backend.service.SubscriptionService;
 import jdk.jshell.spi.ExecutionControl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,16 +34,13 @@ public class AuthController {
     @Autowired
     private CustomeUserDetailsImpl customUserDetails;
 
+    @Autowired
+    private SubscriptionService subscriptionService;
 
     @PostMapping("/signup")
     public ResponseEntity<AuthResponse> createUserHandler(
             @RequestBody User user) throws Exception {
-//        System.out.println("hi");
 
-//        String email = user.getEmail();
-//        String password = user.getPassword();
-//        String fullName = user.getFullName();
-//        String role=user.getRole();
 
         User isUserExist = userRepository.findByEmail(user.getEmail());
 
@@ -59,6 +57,8 @@ public class AuthController {
         createdUser.setRole(user.getRole());
 
         User savedUser = userRepository.save(createdUser);
+
+        subscriptionService.createSubscription(savedUser);
 
         Authentication authentication=new UsernamePasswordAuthenticationToken(user.getEmail(),user.getPassword());
         SecurityContextHolder.getContext().setAuthentication(authentication);
