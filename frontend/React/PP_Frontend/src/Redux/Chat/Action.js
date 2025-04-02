@@ -1,4 +1,5 @@
-import api from "@/Api/api";
+
+import api from "@/config/api";
 import * as actionTypes from "./ActionTypes";
 
 

@@ -1,7 +1,7 @@
 import {
     CREATE_PROJECT_SUCCESS,
     DELETE_PROJECT_SUCCESS,
-  } from "../Project/ActionTypes";
+  } from "../Project/ActionTypes.js";
   import {
     REGISTER_REQUEST,
     REGISTER_SUCCESS,
@@ -13,7 +13,7 @@ import {
     GET_USER_SUCCESS,
     GET_USER_FAILURE,
     LOGOUT,
-  } from "./ActionTypes";
+  } from "./ActionType";
   
   const initialState = {
     user: null,
