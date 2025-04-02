@@ -13,6 +13,7 @@ export const register=userData=>async(dispatch)=>{
             console.log("register success",data)
     }catch (error){
         // console.log(error)
+        alert("User already exists")
         console.log("Login Error:", error.response?.data || error.message);
 
     }
@@ -29,6 +30,7 @@ export const login=userData=>async(dispatch)=>{
             console.log("LOGIN success",data)
     }catch (error){
         // console.log(error)
+        alert("Incorrect User Or Password")
         console.error("Login Error:", error.response?.data || error.message);
     }
 } 
