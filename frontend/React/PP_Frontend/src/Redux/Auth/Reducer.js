@@ -34,7 +34,7 @@ import {
         return {
           ...state,
           loading: false,
-  
+          
           projectSize: state.projectSize + 1,
         };
       case DELETE_PROJECT_SUCCESS:

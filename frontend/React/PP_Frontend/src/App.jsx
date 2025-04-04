@@ -9,12 +9,14 @@ import Auth from './pages/Auth/Auth'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
 import { getUser } from './Redux/Auth/Action'
+import { fetchProjects } from './Redux/Project/Action'
 
 function App(){
   const dispatch=useDispatch();
   const {auth}=useSelector(store=>store);
   useEffect(()=>{
       dispatch(getUser())
+      dispatch(fetchProjects({}))
   },[auth.jwt])
   console.log(auth)
   return(
@@ -25,8 +27,8 @@ function App(){
         <Navbar/>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/project/:id" element={<ProjectDetails />} />
-            <Route path="/project/:projectId/issue/:issueId" element={<IssueDetails />} />
+            <Route path="/projects/:id" element={<ProjectDetails />} />
+            <Route path="/projects/:projectId/issue/:issueId" element={<IssueDetails />} />
             <Route path="/upgrade_plan" element={<Subscription />} />
           </Routes>
         </div>:<Auth/>

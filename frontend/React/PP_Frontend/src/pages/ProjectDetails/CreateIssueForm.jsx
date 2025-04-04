@@ -1,10 +1,15 @@
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Description } from "@radix-ui/react-dialog";
+import { createIssue } from "@/Redux/Issue/Action";
+import { Description, DialogClose } from "@radix-ui/react-dialog";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
 
-const CreateIssueForm = () => {
+const CreateIssueForm = ({status}) => {
+  const dispatch=useDispatch();
+  const {id}=useParams()
   const form = useForm({
     defaultValues: {
       issueName: "",
@@ -12,6 +17,7 @@ const CreateIssueForm = () => {
     },
   });
   const onSubmit = (data) => {
+    dispatch(createIssue({title:data.issueName,description:data.description,projectId:id,status:status}))
     console.log(`create project data: `,data);
   };
   return (
@@ -54,10 +60,12 @@ const CreateIssueForm = () => {
               </FormItem>
             )}
           />
+        <DialogClose asChild>
 
           <Button type="submit" className="w-full bg-slate-400 py-5">
             Create Issue
           </Button>
+        </DialogClose>
         </form>
       </Form>
     </>

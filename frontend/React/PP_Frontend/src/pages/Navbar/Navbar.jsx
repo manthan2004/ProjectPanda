@@ -17,7 +17,7 @@ import { logout } from "@/Redux/Auth/Action";
 
 const Navbar= () => {
     const {auth}=useSelector(store=>store);
-    console.log("Auth state:", auth);
+    // console.log("Auth state:", auth);
 
     const dispatch=useDispatch();
     const navigate = useNavigate()

@@ -12,6 +12,7 @@ export const fetchIssues = (id) => {
         type: actionTypes.FETCH_ISSUES_SUCCESS,
         issues: response.data,
       });
+      console.log("Issues fetched ",response.data)
     } catch (error) {
       dispatch({
         type: actionTypes.FETCH_ISSUES_FAILURE,
@@ -89,6 +90,7 @@ export const createIssue = (issueData) => {
         type: actionTypes.CREATE_ISSUE_SUCCESS,
         issue: response.data,
       });
+      console.log("issue created: ",response.data)
     } catch (error) {
       dispatch({
         type: actionTypes.CREATE_ISSUE_FAILURE,
@@ -98,24 +100,6 @@ export const createIssue = (issueData) => {
   };
 };
 
-// Action for updating an issue
-export const updateIssue = (issueId, updatedData) => {
-  return async (dispatch) => {
-    dispatch({ type: actionTypes.UPDATE_ISSUE_REQUEST });
-    try {
-      const response = await api.put(`/api/issues/${issueId}`, updatedData);
-      dispatch({
-        type: actionTypes.UPDATE_ISSUE_SUCCESS,
-        issue: response.data,
-      });
-    } catch (error) {
-      dispatch({
-        type: actionTypes.UPDATE_ISSUE_FAILURE,
-        error: error.message,
-      });
-    }
-  };
-};
 
 // Action for deleting an issue
 export const deleteIssue = (issueId) => {

@@ -6,14 +6,17 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useForm } from "react-hook-form";
 import { tags } from "../ProjectList/ProjectList";
 import { Cross1Icon } from "@radix-ui/react-icons";
+import { createProject } from "@/Redux/Project/Action";
+import { useDispatch } from "react-redux";
 
 const CreateProjectForm = () => {
+    const dispatch=useDispatch();
     const form = useForm({
         defaultValues: {
             name: "",
             description: "",
             category: "",
-            tags: ["javascript", "React"], // Ensure this is an array
+            tags: ["JavaScript", "React"], // Ensure this is an array
         },
     });
 
@@ -29,6 +32,7 @@ const CreateProjectForm = () => {
     };
 
     const onSubmit = (data) => {
+        dispatch(createProject(data))
         console.log("Create Project data", data);
     };
 

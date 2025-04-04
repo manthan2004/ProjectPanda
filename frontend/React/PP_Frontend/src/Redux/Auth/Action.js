@@ -46,7 +46,7 @@ export const getUser=()=>async(dispatch)=>{
                 // localStorage.setItem("jwt",data.jwt)
                 dispatch({type:GET_USER_SUCCESS, payload:data})
             // }
-            console.log("user success",data)
+            // console.log("user success",data)
     }catch (error){
         console.log(error)
     }
