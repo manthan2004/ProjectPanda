@@ -106,7 +106,7 @@ const ProjectList = () => {
                                 Tag
                             </h1>
                             <div className="pt-5">
-                                <RadioGroup className="space-y-3 pt 5" defaulValue = "all" onValueChange= {(value) => handleFilterTag(value)}>
+                                <RadioGroup className="space-y-3 pt 5" defaultValue = "all" onValueChange= {(value) => handleFilterTag(value)}>
                                    {tags.map((item)=> <div key={item} className="flex items-center gap-2">
                                         <RadioGroupItem value = {item} id = {`r1- ${item}`} />
                                         <Label htlmFor={`r1- ${item}`} >{item}</Label>

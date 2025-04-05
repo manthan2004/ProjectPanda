@@ -110,27 +110,34 @@ export const deleteProject=({projectId})=>async(dispatch)=>{
 export const inviteToProject=({email,projectId})=>async(dispatch)=>{
     dispatch({type:INVITE_TO_PROJECT_REQUEST})
     try{
-        const {data}=await api.post(`${API_BASE_URL}/api/projects/invite`,{email,projectId})
+        const {data}=await api.post(`${API_BASE_URL}/api/projects/invite`,{email,projectId},{
+            headers:{
+                "Authorization":`Bearer ${localStorage.getItem("jwt")}`
+            }
+        })
         console.log("invite projects",data);
         dispatch({type: INVITE_TO_PROJECT_SUCCESS,payload:data})
     }catch (error) {
-        console.log("error",error)
+        console.log("error",error.response ? error.response.data : error.message)
 
     }
 }
-export const acceptInvitation=({invitationToken,navigate})=>async(dispatch)=>{
+export const acceptInvitation=({token,navigate})=>async(dispatch)=>{
     dispatch({type:ACCEPT_INVITATION_REQUEST})
     try{
-        const {data}=await api.get(`${API_BASE_URL}/api/projects/accept_invitation `,{
+        const {data}=await api.get(`${API_BASE_URL}/api/projects/accept_invitation`,{
+            headers:{
+                "Authorization":`Bearer ${localStorage.getItem("jwt")}`
+            },
             params:{
-                token:invitationToken
+                token
             }
         })
-        navigate("/project"+data.projectId)
+        navigate("/projects/"+data.projectId)
         console.log("accept invitation",data);
         dispatch({type: ACCEPT_INVITATION_SUCCESS,payload:data})
     }catch (error) {
-        console.log("error",error)
+        console.log("error",error.response? error.response.data:error.message)
 
     }
 }

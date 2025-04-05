@@ -1,9 +1,9 @@
 
 import api from "@/config/api";
-import * as actionTypes from "./ActionTypes";
+import * as actionTypes from "./ActionType";
 
 
-export const sendMessage = ({messageData}) => {
+export const sendMessage = (messageData) => {
   return async (dispatch) => {
     dispatch({ type: actionTypes.SEND_MESSAGE_REQUEST });
     try {
@@ -15,6 +15,7 @@ export const sendMessage = ({messageData}) => {
         type: actionTypes.SEND_MESSAGE_SUCCESS,
         message: response.data,
       });
+      console.log("message sent in action",response.data)
     } catch (error) {
         console.log(error)
       dispatch({
@@ -79,7 +80,7 @@ export const fetchChatMessages = (chatId) => {
         messages: response.data,
       });
     } catch (error) {
-        console.log("error -- ",error)
+        console.log("error -- ",error.response? error.response.data:error.message)
       dispatch({
         type: actionTypes.FETCH_CHAT_MESSAGES_FAILURE,
         error: error.message,

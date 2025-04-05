@@ -1,5 +1,5 @@
 // reducer.js
-import * as types from './actionTypes';
+import * as types from './ActionTypes';
 
 const initialState = {
   userSubscription: null,

@@ -43,8 +43,9 @@ public class Project {
     private List<Issue> issues = new ArrayList<>();
 //
 //
-    @ManyToMany
-    private List<User> team = new ArrayList<>();
+@ManyToMany
+private List<User> team = new ArrayList<>();
+
 
 
 }

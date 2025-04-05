@@ -2,13 +2,13 @@ import api from "@/config/api";
 import * as types from "./ActionTypes";
 
 
-export const getUserSubscription = (jwt) => {
+export const getUserSubscription = () => {
   return async (dispatch) => {
     dispatch({ type: types.GET_USER_SUBSCRIPTION_REQUEST });
     try {
       const response = await api.get("/api/subscriptions/user",{
         headers:{
-          "Authorization":`Bearer ${jwt}`
+          "Authorization":`Bearer ${localStorage.getItem("jwt")}`
         }
       });
       dispatch({
@@ -31,6 +31,9 @@ export const upgradeSubscription = ({planType}) => {
     dispatch({ type: types.UPGRADE_SUBSCRIPTION_REQUEST });
     try {
       const response = await api.patch("/api/subscriptions/upgrade", null, {
+       headers:{
+        "Authorization":`Bearer ${localStorage.getItem("jwt")}`
+       },
         params: {
           planType: planType,
         },
