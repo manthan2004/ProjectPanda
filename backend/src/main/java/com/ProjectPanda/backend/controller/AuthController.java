@@ -2,6 +2,7 @@ package com.ProjectPanda.backend.controller;
 
 
 import com.ProjectPanda.backend.config.JwtProvider;
+import com.ProjectPanda.backend.modal.Subscription;
 import com.ProjectPanda.backend.modal.User;
 import com.ProjectPanda.backend.repository.UserRepository;
 import com.ProjectPanda.backend.request.LoginRequest;
@@ -60,6 +61,9 @@ public class AuthController {
 
         subscriptionService.createSubscription(savedUser);
 
+        //11.4
+        Subscription subscription = subscriptionService.getUsersSubscription(savedUser.getId());
+
         Authentication authentication=new UsernamePasswordAuthenticationToken(user.getEmail(),user.getPassword());
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -68,6 +72,9 @@ public class AuthController {
         AuthResponse res=new AuthResponse();
         res.setMessage("signup success");
         res.setJwt(jwt);
+        //11.4
+        res.setPlanType(subscription.getPlanType().name());
+
 
 
         return new ResponseEntity<>(res, HttpStatus.CREATED);
@@ -90,6 +97,21 @@ public class AuthController {
 
         res.setMessage("Login Success");
         res.setJwt(jwt);
+
+        //11.4
+        // 🔍 Fetch user
+        User user = userRepository.findByEmail(username);
+
+        // 🔍 Fetch subscription and set plan type
+        try {
+            Subscription subscription = subscriptionService.getUsersSubscription(user.getId());
+            if (subscription != null) {
+                res.setPlanType(subscription.getPlanType().name());
+            }
+        } catch (Exception e) {
+            // Optional: Log or handle error
+            res.setPlanType("UNKNOWN");
+        }
 
         return new ResponseEntity<>(res, HttpStatus.CREATED);
     }

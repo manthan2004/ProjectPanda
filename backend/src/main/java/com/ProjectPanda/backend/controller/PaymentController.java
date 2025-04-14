@@ -36,6 +36,8 @@ public class PaymentController {
             @RequestHeader("Authorization")String jwt)
             throws Exception {
         User user=userService.findUserProfileByJwt(jwt);
+
+
         int amount = 799 * 100;
 
         if (planType.equals(PlanType.ANNUALLY)) {

@@ -12,4 +12,6 @@ public interface UserService {
 
     public User updateUsersProjectSize(User user,int number);
 
+    public User saveUser(User user);
+
 }

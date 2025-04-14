@@ -1,9 +1,8 @@
 package com.ProjectPanda.backend.service;
 
-import com.ProjectPanda.backend.modal.Chat;
-import com.ProjectPanda.backend.modal.Project;
-import com.ProjectPanda.backend.modal.User;
+import com.ProjectPanda.backend.modal.*;
 import com.ProjectPanda.backend.repository.ProjectRepository;
+import com.ProjectPanda.backend.repository.SubscriptionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,32 +22,68 @@ public class ProjectServiceImpl implements ProjectService {
     @Autowired
     private ChatService chatService;
 
+    @Autowired
+    private SubscriptionRepository subscriptionRepository;
+
+//    @Override
+//    public Project createProject(Project project, User user) throws Exception {
+////        User user = userService.findUserById(id);
+//        Project createdProject=new Project();
+//
+//        createdProject.setOwner(user);
+//        createdProject.setTags(project.getTags());
+//        createdProject.setName(project.getName());
+//        createdProject.setCategory(project.getCategory());
+//        createdProject.setDescription(project.getDescription());
+//        createdProject.getTeam().add(user);
+//
+//        System.out.println(createdProject);
+//        Project savedProject=projectRepository.save(createdProject);
+//
+////        savedProject.getTeam().add(user);
+//
+//        Chat chat = new Chat();
+//        chat.setProject(savedProject);
+//        Chat projectChat = chatService.createChat(chat);
+//        savedProject.setChat(projectChat);
+//
+//
+//
+//        return savedProject;
+//    }
+
     @Override
     public Project createProject(Project project, User user) throws Exception {
-//        User user = userService.findUserById(id);
-        Project createdProject=new Project();
+    // 1. Fetch user subscription
+    Subscription subscription = subscriptionRepository.findByUserId(user.getId());
 
-        createdProject.setOwner(user);
-        createdProject.setTags(project.getTags());
-        createdProject.setName(project.getName());
-        createdProject.setCategory(project.getCategory());
-        createdProject.setDescription(project.getDescription());
-        createdProject.getTeam().add(user);
+    if (subscription.getPlanType() == PlanType.FREE) {
+        int existingProjects = projectRepository.countByOwnerId(user.getId());
 
-        System.out.println(createdProject);
-        Project savedProject=projectRepository.save(createdProject);
-
-//        savedProject.getTeam().add(user);
-
-        Chat chat = new Chat();
-        chat.setProject(savedProject);
-        Chat projectChat = chatService.createChat(chat);
-        savedProject.setChat(projectChat);
-
-
-
-        return savedProject;
+        if (existingProjects >= 3) {
+            throw new Exception("Free plan allows only 3 projects. Upgrade your plan to add more.");
+        }
     }
+
+    // 2. Proceed with project creation
+    Project createdProject = new Project();
+    createdProject.setOwner(user);
+    createdProject.setTags(project.getTags());
+    createdProject.setName(project.getName());
+    createdProject.setCategory(project.getCategory());
+    createdProject.setDescription(project.getDescription());
+    createdProject.getTeam().add(user);
+
+    Project savedProject = projectRepository.save(createdProject);
+
+    Chat chat = new Chat();
+    chat.setProject(savedProject);
+    Chat projectChat = chatService.createChat(chat);
+    savedProject.setChat(projectChat);
+
+    return savedProject;
+}
+
 
     @Override
     public List<Project> getProjectByTeam(User user, String category, String tag) throws Exception {

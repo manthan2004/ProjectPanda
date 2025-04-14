@@ -21,6 +21,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User saveUser(User user) {
+        return userRepository.save(user);
+    }
+
+    @Override
     public User findUserByEmail(String email) throws Exception {
         User user=userRepository.findByEmail(email);
         if(user==null){

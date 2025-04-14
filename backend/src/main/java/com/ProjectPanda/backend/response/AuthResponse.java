@@ -12,6 +12,8 @@ public class AuthResponse {
 
     private String jwt;
     private String message;
+    //11.4
+    private String planType;
 
 }
 

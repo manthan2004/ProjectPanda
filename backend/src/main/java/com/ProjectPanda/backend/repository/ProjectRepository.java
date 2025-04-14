@@ -22,6 +22,9 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
 
     List<Project> findByTeamContainingOrOwner(User user,User owner);
 
+    //11.4
+    int countByOwnerId(Long ownerId);
+
 }
 
 
