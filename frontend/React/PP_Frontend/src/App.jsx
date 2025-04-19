@@ -28,6 +28,7 @@ function App(){
       {
         auth.user ?<div>
         <Navbar/>
+          {console.log("USERNAME:",auth.user)}
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/projects/:id" element={<ProjectDetails />} />

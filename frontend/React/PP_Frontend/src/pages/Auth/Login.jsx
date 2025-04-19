@@ -20,7 +20,7 @@ const Login =()=>{
       };
     return(
         <div className="space-y-5">
-            <h1>Register</h1>
+            <h1>Login</h1>
             <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}

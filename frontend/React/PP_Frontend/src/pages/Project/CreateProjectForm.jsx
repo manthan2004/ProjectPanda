@@ -6,8 +6,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useForm } from "react-hook-form";
 import { tags } from "../ProjectList/ProjectList";
 import { Cross1Icon } from "@radix-ui/react-icons";
-import { createProject } from "@/Redux/Project/Action";
-import { useDispatch } from "react-redux";
+import { createProject, fetchProjects } from "@/Redux/Project/Action";
+import { useDispatch, useSelector } from "react-redux";
 
 const CreateProjectForm = () => {
     const dispatch=useDispatch();
@@ -30,7 +30,7 @@ const CreateProjectForm = () => {
 
         form.setValue("tags", updatedTags, { shouldValidate: true });
     };
-
+    const {project}=useSelector(store=>store);
     const onSubmit = (data) => {
         dispatch(createProject(data))
         console.log("Create Project data", data);

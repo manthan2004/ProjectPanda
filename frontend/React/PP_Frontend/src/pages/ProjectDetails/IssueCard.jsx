@@ -9,15 +9,21 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { DotsVerticalIcon, PersonIcon } from "@radix-ui/react-icons";
 import UserList from "./UserList";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { deleteIssue } from "@/Redux/Issue/Action";
+import { deleteIssue, updateIssueStatus } from "@/Redux/Issue/Action";
+import { use, useEffect, useState } from "react";
 
 const IssueCard = ({item,projectId}) => {
+  const [newstat,setstat]=useState();
   const dispatch=useDispatch();
   const handleDelete=()=>{
     dispatch(deleteIssue(item.id));
   }
+  useEffect(()=>{
+      if(newstat)dispatch(updateIssueStatus({id:item.id,status:newstat}));
+  },[newstat])
+
     const navigate= useNavigate();
   return (
     <Card className="rounded-md py-1 pb-2 ">
@@ -31,9 +37,9 @@ const IssueCard = ({item,projectId}) => {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <DropdownMenuItem>In Progress</DropdownMenuItem>
-              <DropdownMenuItem>Done</DropdownMenuItem>
-              <DropdownMenuItem>Edit</DropdownMenuItem>
+              <DropdownMenuItem onClick={()=>{setstat("in_progress")}}>In Progress</DropdownMenuItem>
+              <DropdownMenuItem onClick={()=>{setstat("Done")}}>Done</DropdownMenuItem>
+              <DropdownMenuItem onClick={()=>{setstat("pending")}}>To Do</DropdownMenuItem>
               <DropdownMenuItem onClick={handleDelete}>Delete</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

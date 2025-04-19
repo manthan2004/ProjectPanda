@@ -4,7 +4,9 @@ import { FETCH_PROJECTS_REQUEST, FETCH_PROJECTS_SUCCESS,SEARCH_PROJECT_SUCCESS ,
 export const fetchProjects=({category,tag})=>async(dispatch)=>{
     dispatch({type:FETCH_PROJECTS_REQUEST})
     try{
-        const {data}=await api.get("/api/projects",{params:{category,tag}})
+        const {data}=await api.get("/api/projects",{params:{category,tag},
+            headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
+        })
         console.log("all projects",data);
         dispatch({type:FETCH_PROJECTS_SUCCESS,projects:data})
     }catch (error) {
@@ -12,26 +14,6 @@ export const fetchProjects=({category,tag})=>async(dispatch)=>{
 
     }
 } 
-// export const fetchProjects = ({ category, tag }) => async (dispatch) => {
-//     dispatch({ type: FETCH_PROJECTS_REQUEST });
-//     try {
-//         const token = localStorage.getItem("token");  // Get token
-//         const { data } = await api.get("/api/projects", {
-//             params: { category, tag },
-//             headers: { Authorization: `Bearer ${token}` }, // Send token
-//         });
-//         console.log("all projects", data);
-//         dispatch({ type: FETCH_PROJECTS_SUCCESS, projects: data });
-//     } catch (error) {
-//         console.error("Error fetching projects:", error.response ? error.response.data : error.message);
-//     }
-// };
-
-
-
-
-
-
 
 export const searchProjects=({keyword})=>async(dispatch)=>{
     dispatch({type:SEARCH_PROJECT_REQUEST})
@@ -83,11 +65,13 @@ export const createProject = (projectData) => {
           project: response.data,
         });
       } catch (error) {
-        console.log("catch error ",error)
+        // console.log("catch error ",error)
+        console.log("catch error ", error.response?.data || error.message);
         dispatch({
           type: CREATE_PROJECT_FAILURE,
-          error: error.message,
+          error: error,
         });
+
       }
     };
   };

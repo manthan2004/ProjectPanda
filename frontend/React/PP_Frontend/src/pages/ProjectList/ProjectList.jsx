@@ -10,6 +10,7 @@ import ProjectCard from "../Project/ProjectCard";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProjects, searchProjects } from "@/Redux/Project/Action";
 import { DialogPortal } from "@radix-ui/react-dialog";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export const tags = [
     
@@ -43,10 +44,13 @@ export const tags = [
 
 ]
 const ProjectList = () => {
-
+    const {auth,project}=useSelector(store=>store)
+    const [plen,setPlen]=useState(project.projects.length)
+  
     const[keyword, setKeyword] = useState("");
     const dispatch=useDispatch();
     const handleFilterCategory = (value) =>{
+       
         if(value=="all")dispatch(fetchProjects({}));
         else dispatch(fetchProjects({category:value}))
     }
@@ -54,12 +58,21 @@ const ProjectList = () => {
         if(value=="All")dispatch(fetchProjects({}));
         else dispatch(fetchProjects({tag:value}))
     }
-    const {project}=useSelector(store=>store);
+    // const {project}=useSelector(store=>store);
     const handleSearchChange = (e) =>{
         setKeyword(e.target.value)
         dispatch(searchProjects({keyword:e.target.value}));
     }
-   
+
+    useEffect(()=>{
+        handleFilterCategory("all")
+    },[auth.user])
+    useEffect(()=>{
+        console.log("PLEM",project.projects.length)
+
+    },[project.projects.length])
+    const [selectedTags, setSelectedTags] = useState([]);
+
     return(
         <>
         <div className="relative px-5 lg:px-0 lg:flex gap-5 justify-center py-5">
@@ -106,13 +119,14 @@ const ProjectList = () => {
                                 Tag
                             </h1>
                             <div className="pt-5">
-                                <RadioGroup className="space-y-3 pt 5" defaultValue = "all" onValueChange= {(value) => handleFilterTag(value)}>
+                                <RadioGroup className="space-y-3 pt-5" defaultValue = "all" onValueChange= {(value) => handleFilterTag(value)}>
                                    {tags.map((item)=> <div key={item} className="flex items-center gap-2">
                                         <RadioGroupItem value = {item} id = {`r1- ${item}`} />
-                                        <Label htlmFor={`r1- ${item}`} >{item}</Label>
+                                        <Label htmlFor={`r1- ${item}`} >{item}</Label>
                                     </div>)}
                                     
                                 </RadioGroup>
+
                             </div>
                         </div>
                         </ScrollArea>
